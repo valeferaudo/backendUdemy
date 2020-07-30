@@ -8,7 +8,9 @@ const { validarCampos } = require("../middlewares/validar-campos")
 
 router.post('/',[check('email','EL email es obligatorio').isEmail(),
                 check('password', 'El password es obligatorio').not().isEmpty(),
-                validarCampos],authCtrl.login)
+                validarCampos],authCtrl.login);
+router.post('/google',[check('token','EL token de google es obligatorio').not().isEmpty(),
+                        validarCampos],authCtrl.googleLogin);
 
 
 module.exports = router;

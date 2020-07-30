@@ -10,12 +10,17 @@ const app = express();
 //Base de datos
 dbConnection();
 
+//Directorio publico
+app.use(express.static('public'))
+
+
 //Settings
 app.set('port',process.env.PORT||3001);
 app.use(cors());
 app.use(express.json());
 //valentin
 //S2EP76BDbimdHZH8
+
 
 //Rutas
 app.use('/api/usuarios',require('./routes/usuario.routes'));
