@@ -31,14 +31,59 @@ medicoCtrl.createMedico = async (req,res)=>{
     }
 };
 medicoCtrl.updateMedico = async (req,res)=>{
-    res.json({
-        hola:'hola update'
-    })
+    const id = req.params.id;
+    const uid = req.uid
+    try {
+        const medicoBD = await Medico.findById(id);
+        if(!medicoBD){
+            return res.status(404).json({
+                ok:false,
+                msg:'No existe Medico'
+            });
+        }
+        const cambiosMedico = {
+            ... req.body,
+            usuario : uid
+        }    
+        const medico = await Medico.findByIdAndUpdate(id,cambiosMedico,{new:true});
+        res.json({
+            ok:true,
+            msg:"Medico Updated",
+            medico
+        })
+        
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg:"Error inesperado"
+        })
+    }
 };
 medicoCtrl.deleteMedico = async (req,res)=>{
-    res.json({
-        hola:'hola delte'
-    })
+    const id = req.params.id;
+    try {
+        const medicoBD = await Medico.findById(id);
+        if(!medicoBD){
+            return res.status(404).json({
+                ok:false,
+                msg:'No existe Medico'
+            });
+        }
+        await Medico.findByIdAndDelete(id);
+        res.json({
+            ok:true,
+            msg: 'Medico eliminado'
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg:'Error inesperado'
+        })
+    }
 }
 
 module.exports = medicoCtrl;

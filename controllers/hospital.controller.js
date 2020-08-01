@@ -30,14 +30,60 @@ hospitalCtrl.createHospital = async (req,res)=>{
     }
 };
 hospitalCtrl.updateHospital = async (req,res)=>{
-    res.json({
-        hola:'hola update'
-    })
+    const id = req.params.id;
+    const uid = req.uid
+    try {
+        const hospitalDB = await Hospital.findById(id);
+        if(!hospitalDB){
+            return res.status(404).json({
+                ok:false,
+                msg:'No existe Hospital'
+            });
+        }
+        const cambiosHospital = {
+            ... req.body,
+            usuario : uid
+        }
+        
+        const hospital = await Hospital.findByIdAndUpdate(id,cambiosHospital,{new:true});
+        res.json({
+            ok:true,
+            msg:"Hospital Updated",
+            hospital
+        })
+        
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg:"Error inesperado"
+        })
+    }
 };
 hospitalCtrl.deleteHospital = async (req,res)=>{
-    res.json({
-        hola:'hola delte'
-    })
+    const id = req.params.id;
+    try {
+        const hospitalDB = await Hospital.findById(id);
+        if(!hospitalDB){
+            return res.status(404).json({
+                ok:false,
+                msg:'No existe Hospital'
+            });
+        }
+        await Hospital.findByIdAndDelete(id);
+        res.json({
+            ok:true,
+            msg: 'Hospital eliminado'
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg:'Error inesperado'
+        })
+    }
 }
 
 module.exports = hospitalCtrl;

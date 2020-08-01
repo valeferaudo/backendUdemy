@@ -83,5 +83,18 @@ authCtrl.googleLogin = async (req = request,res= response)=>{
     }
 }
 
+authCtrl.renewToken = async (req,res)=>{
+    const uid = req.uid;
+
+
+    //GENERAR JWT
+    const token =  await generarJWT(uid)
+    
+    res.json({
+        ok:true,
+        uid,
+        token: token
+    })
+}
 
 module.exports = authCtrl;
