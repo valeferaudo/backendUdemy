@@ -27,7 +27,7 @@ authCtrl.login = async(req = request,res = response)=>{
 
         res.json({
             ok: true,
-            msg:"Bienvenido",
+            msg:"Usuario logueado",
             token: token
         })
     } catch (error) {

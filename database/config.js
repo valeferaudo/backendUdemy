@@ -12,7 +12,7 @@ const dbConnection = async () =>{
             console.log("DB online")
         }
         catch(error){
-            console.error(err)
+            console.error(error)
             throw new Error("Error a la hora de iniciar bd")            
     }
 
